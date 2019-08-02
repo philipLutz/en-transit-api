@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Prototype backend for digital mail handling service",
   "main": "server.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "babel-watch server.js",
