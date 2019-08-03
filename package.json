@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-watch server.js",
+    "start": "nodemon start.js",
     "build": "babel db.js --out-dir build"
   },
   "author": "Philip Lutz",
@@ -18,12 +18,21 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
     "pg": "^7.12.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
     "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-watch": "^7.0.0"
+    "babel-watch": "^7.0.0",
+    "install": "^0.13.0",
+    "make-runnable": "^1.3.6",
+    "npm": "^6.10.2"
   }
 }
