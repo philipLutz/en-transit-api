@@ -11,7 +11,7 @@ app.use(morgan('common'));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  return res.status(200).send({'message': 'GET IT GOT IT GO !'});
+  return res.status(200).send({'message': 'GET IT GOT IT GO!'});
 });
 
 app.listen(8080)
