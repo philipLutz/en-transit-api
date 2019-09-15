@@ -12,10 +12,10 @@ pool.on('connect', () => {
 });
 
 // Create Tables
-const createUserTable = () => {
+const createUsersTable = () => {
   const queryText =
-    `CREATE TABLE IF NOT EXISTS
-      user(
+    `CREATE TABLE IF NOT EXISTS 
+      users(
         user_id UUID PRIMARY KEY,
         email VARCHAR(128) UNIQUE NOT NULL,
         password VARCHAR(128) NOT NULL,
@@ -26,7 +26,9 @@ const createUserTable = () => {
         city VARCHAR(64) NOT NULL,
         state VARCHAR(64) NOT NULL,
         country VARCHAR(64) NOT NULL,
+        admin BOOLEAN NOT NULL,
         po_box VARCHAR(32),
+        zip VARCHAR(32),
         created_date TIMESTAMP,
         modified_date TIMESTAMP
       )`;
@@ -42,10 +44,10 @@ const createUserTable = () => {
     });
 }
 
-const createConsentTable = () => {
+const createConsentsTable = () => {
   const queryText = 
     `CREATE TABLE IF NOT EXISTS
-      consent(
+      consents(
         consent_id UUID PRIMARY KEY,
         user_id VARCHAR(32) NOT NULL,
         image_url VARCHAR(128),
@@ -91,10 +93,10 @@ const createMailTable = () => {
     });
 }
 
-const createRequestTable = () => {
+const createRequestsTable = () => {
   const queryText = 
     `CREATE TABLE IF NOT EXISTS
-      request(
+      requests(
         request_id UUID PRIMARY KEY,
         user_id VARCHAR(32) NOT NULL,
         mail_id VARCHAR(32) NOT NULL,
@@ -108,6 +110,7 @@ const createRequestTable = () => {
         city VARCHAR(64),
         state VARCHAR(64),
         country VARCHAR(64),
+        zip VARCHAR(32),
         created_date TIMESTAMP,
         completed_date TIMESTAMP
       )`;
@@ -124,15 +127,15 @@ const createRequestTable = () => {
 }
 
 const createAllTables = () => {
-  createUserTable,
-  createConsentTable,
-  createMailTable,
-  createRequestTable
+  createUsersTable(),
+  createConsentsTable(),
+  createMailTable(),
+  createRequestsTable()
 }
 
 // Drop Tables
-const dropUserTable = () => {
-  const queryText = 'DROP TABLE IF EXISTS user';
+const dropUsersTable = () => {
+  const queryText = 'DROP TABLE IF EXISTS users';
   pool.query(queryText)
     .then((res) => {
       console.log(res);
@@ -144,8 +147,8 @@ const dropUserTable = () => {
     });
 }
 
-const dropConsentTable = () => {
-  const queryText = 'DROP TABLE IF EXISTS consent';
+const dropConsentsTable = () => {
+  const queryText = 'DROP TABLE IF EXISTS consents';
   pool.query(queryText)
     .then((res) => {
       console.log(res);
@@ -170,8 +173,8 @@ const dropMailTable = () => {
     });
 }
 
-const dropRequestTable = () => {
-  const queryText = 'DROP TABLE IF EXISTS request';
+const dropRequestsTable = () => {
+  const queryText = 'DROP TABLE IF EXISTS requests';
   pool.query(queryText)
     .then((res) => {
       console.log(res);
@@ -184,10 +187,10 @@ const dropRequestTable = () => {
 }
 
 const dropAllTables = () => {
-  dropUserTable,
-  dropConsentTable,
-  dropMailTable,
-  dropRequestTable
+  dropUsersTable(),
+  dropConsentsTable(),
+  dropMailTable(),
+  dropRequestsTable()
 }
 
 // Disconnect
@@ -197,9 +200,18 @@ pool.on('remove', () => {
 });
 
 module.exports = {
+  
+  createUsersTable,
+  createConsentsTable,
+  createMailTable,
+  createRequestsTable,
   createAllTables,
-  createUserTable,
-  dropUserTable
+  
+  dropUsersTable,
+  dropConsentsTable,
+  dropMailTable,
+  dropRequestsTable,
+  dropAllTables
 };
 
 require('make-runnable');
