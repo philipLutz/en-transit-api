@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
 import 'babel-polyfill';
 import User from './src/controller/User.js';
 import Auth from './src/middleware/Auth.js';
@@ -10,6 +11,14 @@ const app = express();
 
 // Logging
 app.use(morgan('common'));
+
+// Rate Limit
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 
 app.use(express.json());
 
