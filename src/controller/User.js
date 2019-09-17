@@ -20,7 +20,7 @@ const User = {
     const hashPassword = Helper.hashPassword(req.body.password);
 
     const createQuery = `INSERT INTO
-      users(id, email, password, first_name, last_name, phone, address, city, state, country, admin, po_box, zip, created_date, modified_date)
+      users(user_id, email, password, first_name, last_name, phone, address, city, state, country, admin, po_box, zip, created_date, modified_date)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
       returning *`;
     const values = [

@@ -31,6 +31,15 @@ app.post('/api/users', User.create);
 app.post('/api/users/login', User.login);
 app.delete('/api/users/delete', Auth.verifyToken, User.delete);
 
+// Consents
+
+
+// Mail
+
+
+// Requests
+
+
 
 
 app.listen(8080)
