@@ -49,7 +49,7 @@ const createConsentsTable = () => {
     `CREATE TABLE IF NOT EXISTS
       consents(
         consent_id UUID PRIMARY KEY,
-        user_id VARCHAR(32) NOT NULL,
+        user_id UUID NOT NULL,
         image_url VARCHAR(128),
         complete BOOLEAN NOT NULL,
         created_date TIMESTAMP,
@@ -72,7 +72,7 @@ const createMailTable = () => {
     `CREATE TABLE IF NOT EXISTS
       mail(
         mail_id UUID PRIMARY KEY,
-        user_id VARCHAR(32) NOT NULL,
+        user_id UUID NOT NULL,
         image_url VARCHAR(128),
         open BOOLEAN NOT NULL,
         scan BOOLEAN NOT NULL,
@@ -98,8 +98,8 @@ const createRequestsTable = () => {
     `CREATE TABLE IF NOT EXISTS
       requests(
         request_id UUID PRIMARY KEY,
-        user_id VARCHAR(32) NOT NULL,
-        mail_id VARCHAR(32) NOT NULL,
+        user_id UUID NOT NULL,
+        mail_id UUID NOT NULL,
         open BOOLEAN NOT NULL,
         scan BOOLEAN NOT NULL,
         forward BOOLEAN NOT NULL,

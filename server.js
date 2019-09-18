@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import 'babel-polyfill';
 import User from './src/controller/User.js';
 import Auth from './src/middleware/Auth.js';
+import Consent from './src/controller/Consent.js';
 
 dotenv.config();
 const app = express();
@@ -32,7 +33,10 @@ app.post('/api/users/login', User.login);
 app.delete('/api/users/delete', Auth.verifyToken, User.delete);
 
 // Consents
-
+app.post('/api/consents', Auth.verifyToken, Consent.create);
+app.get('/api/consents/:consent_id', Auth.verifyToken, Consent.getOne);
+app.put('/api/consents/:consent_id', Auth.verifyToken, Consent.update);
+app.delete('/api/consents/:consent_id', Auth.verifyToken, Consent.delete);
 
 // Mail
 

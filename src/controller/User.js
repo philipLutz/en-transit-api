@@ -74,7 +74,7 @@ const User = {
       if(!Helper.comparePassword(rows[0].password, req.body.password)) {
         return res.status(400).send({ 'message': 'The credentials you provided is incorrect' });
       }
-      const token = Helper.generateToken(rows[0].id);
+      const token = Helper.generateToken(rows[0].user_id);
       return res.status(200).send({ token });
     } catch(error) {
       return res.status(400).send(error)
@@ -87,7 +87,7 @@ const User = {
    * @returns {void} return status code 204 
    */
   async delete(req, res) {
-    const deleteQuery = 'DELETE FROM users WHERE id=$1 returning *';
+    const deleteQuery = 'DELETE FROM users WHERE user_id=$1 returning *';
     try {
       const { rows } = await db.query(deleteQuery, [req.user.id]);
       if(!rows[0]) {
