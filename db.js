@@ -7,6 +7,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 });
 
+// Connect
 pool.on('connect', () => {
   console.log('connected to the db');
 });
@@ -100,6 +101,7 @@ const createRequestsTable = () => {
         request_id UUID PRIMARY KEY,
         user_id UUID NOT NULL,
         mail_id UUID NOT NULL,
+        complete BOOLEAN NOT NULL,
         open BOOLEAN NOT NULL,
         scan BOOLEAN NOT NULL,
         forward BOOLEAN NOT NULL,
@@ -112,7 +114,7 @@ const createRequestsTable = () => {
         country VARCHAR(64),
         zip VARCHAR(32),
         created_date TIMESTAMP,
-        completed_date TIMESTAMP
+        modified_date TIMESTAMP
       )`;
 
   pool.query(queryText)
@@ -200,13 +202,11 @@ pool.on('remove', () => {
 });
 
 module.exports = {
-  
   createUsersTable,
   createConsentsTable,
   createMailTable,
   createRequestsTable,
   createAllTables,
-  
   dropUsersTable,
   dropConsentsTable,
   dropMailTable,

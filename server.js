@@ -6,6 +6,7 @@ import 'babel-polyfill';
 import User from './src/controller/User.js';
 import Auth from './src/middleware/Auth.js';
 import Consent from './src/controller/Consent.js';
+import Mail from './src/controller/Mail.js';
 
 dotenv.config();
 const app = express();
@@ -23,13 +24,10 @@ app.use(limiter);
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  return res.status(200).send({'message': 'GET IT GOT IT GO!'});
-});
-
 // User Routes
 app.post('/api/users', User.create);
 app.post('/api/users/login', User.login);
+app.put('/api/users/:user_id', Auth.verifyToken, User.update);
 app.delete('/api/users/delete', Auth.verifyToken, User.delete);
 
 // Consents
@@ -39,7 +37,11 @@ app.put('/api/consents/:consent_id', Auth.verifyToken, Consent.update);
 app.delete('/api/consents/:consent_id', Auth.verifyToken, Consent.delete);
 
 // Mail
-
+app.post('/api/mail', Auth.verifyToken, Mail.create);
+app.get('/api/mail', Auth.verifyToken, Mail.getAll);
+app.get('/api/mail/:mail_id', Auth.verifyToken, Mail.getOne);
+app.put('/api/mail/:mail_id', Auth.verifyToken, Mail.update);
+app.delete('/api/mail/:mail_id', Auth.verifyToken, Mail.delete);
 
 // Requests
 

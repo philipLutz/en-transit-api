@@ -3,7 +3,6 @@ import uuidv4 from 'uuid/v4';
 import db from '../db';
 
 const Consent = {
-	// Create new consent
 	async create(req, res) {
 		// First, need to check if consent exists, only one consent form for each user
 		const findOneQuery = 'SELECT * FROM consents WHERE user_id = $1';
@@ -35,7 +34,6 @@ const Consent = {
 			return res.status(400).send(error);
 		}
 	},
-	// Get consent from user_id
 	async getOne(req, res) {
 		const findOneQuery = 'SELECT * FROM consents WHERE consent_id = $1 AND user_id = $2';
 		try {
@@ -48,7 +46,6 @@ const Consent = {
 			return res.status(400).send(error);
 		}
 	},
-	// Update existing consent
 	async update(req, res) {
 		const findOneQuery = 'SELECT * FROM consents WHERE consent_id = $1 AND user_id = $2';
 		const updateOneQuery = `UPDATE consents
@@ -72,7 +69,6 @@ const Consent = {
 			return res.status(400).send(error);
 		}
 	},
-	// Delete consent
 	async delete(req, res) {
 		const deleteQuery = `DELETE FROM consents WHERE consent_id = $1 AND user_id = $2 returning *`;
 		try {

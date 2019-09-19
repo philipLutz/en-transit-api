@@ -4,12 +4,6 @@ import db from '../db';
 import Helper from './Helper';
 
 const User = {
-  /**
-   * Create A User
-   * @param {object} req 
-   * @param {object} res
-   * @returns {object} reflection object 
-   */
   async create(req, res) {
     if (!req.body.email || !req.body.password || !req.body.first_name || !req.body.last_name || ! req.body.phone || !req.body.address || !req.body.city || !req.body.state || !req.body.country || !req.body.admin) {
       return res.status(400).send({'message': 'Some values are missing'});
@@ -52,12 +46,6 @@ const User = {
       return res.status(400).send(error);
     }
   },
-  /**
-   * Login
-   * @param {object} req 
-   * @param {object} res
-   * @returns {object} user object 
-   */
   async login(req, res) {
     if (!req.body.email || !req.body.password) {
       return res.status(400).send({'message': 'Some values are missing'});
@@ -80,12 +68,37 @@ const User = {
       return res.status(400).send(error)
     }
   },
-  /**
-   * Delete A User
-   * @param {object} req 
-   * @param {object} res 
-   * @returns {void} return status code 204 
-   */
+  async update(req, res) {
+    const findOneQuery = 'SELECT * FROM users WHERE user_id = $1';
+    const updateOneQuery = `UPDATE users
+    SET first_name = $1, last_name = $2, phone = $3, address = $4, city = $5, state = $6, country = $7, admin = $8, po_box = $9, zip = $10, modified_date = $11
+    WHERE user_id = $12 returning *`;
+
+    try {
+      const { rows } = await db.query(findOneQuery, [req.user.id]);
+      if (!rows[0]) {
+        return res.status(404).send({'message':'user not found'});
+      }
+      const values = [
+        req.body.first_name || rows[0].first_name,
+        req.body.last_name || rows[0].last_name,
+        req.body.phone || rows[0].phone,
+        req.body.address || rows[0].address,
+        req.body.city || rows[0].city,
+        req.body.state || rows[0].state,
+        req.body.country || rows[0].country,
+        req.body.admin || rows[0].admin,
+        req.body.po_box || rows[0].po_box,
+        req.body.zip || rows[0].zip,
+        moment(new Date()),
+        req.user.id
+      ];
+      const response = await db.query(updateOneQuery, values);
+      return res.status(200).send({'message':'user updated'});
+    } catch(error) {
+      return res.status(400).send(error)
+    }
+  },
   async delete(req, res) {
     const deleteQuery = 'DELETE FROM users WHERE user_id=$1 returning *';
     try {
