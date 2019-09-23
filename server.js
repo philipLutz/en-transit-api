@@ -7,6 +7,7 @@ import User from './src/controller/User.js';
 import Auth from './src/middleware/Auth.js';
 import Consent from './src/controller/Consent.js';
 import Mail from './src/controller/Mail.js';
+import Request from './src/controller/Request.js';
 
 dotenv.config();
 const app = express();
@@ -39,12 +40,13 @@ app.delete('/api/consents/:consent_id', Auth.verifyToken, Consent.delete);
 // Mail
 app.post('/api/mail', Auth.verifyToken, Mail.create);
 app.get('/api/mail', Auth.verifyToken, Mail.getAll);
+app.get('/api/mail/:user_id', Auth.verifyToken, Mail.getAll);
 app.get('/api/mail/:mail_id', Auth.verifyToken, Mail.getOne);
 app.put('/api/mail/:mail_id', Auth.verifyToken, Mail.update);
 app.delete('/api/mail/:mail_id', Auth.verifyToken, Mail.delete);
 
 // Requests
-
+app.post('/api/requests/:mail_id', Auth.verifyToken, Request.create);
 
 
 

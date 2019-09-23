@@ -28,21 +28,47 @@ const Mail = {
 		}
 	},
 	async getAll(req, res) {
-		const findAllQuery = 'SELECT * FROM mail WHERE user_id = $1';
-		try {
-			const { rows } = await db.query(findAllQuery, [req.user.id]);
-			if (!rows[0]) {
-				return res.status(404).send({'message':'mail not found'});
+		if (req.user.admin) {
+			if (req.params.user_id) {
+				const findAllQueryUser = 'SELECT * FROM mail WHERE user_id = $1';
+				try {
+					const { rows } = await db.query(findAllQueryUser, [req.params.user_id]);
+					if (!rows[0]) {
+						return res.status(404).send({'message':'mail not found'});
+					}
+					return res.status(200).send(rows);
+				}	catch(error) {
+					return res.status(400).send(error);
+				}
+			}	else {
+				const findAllQuery = 'SELECT * FROM mail';
+				try {
+					const { rows } = await db.query(findAllQuery);
+					if (!rows[0]) {
+						return res.status(404).send({'message':'mail not found'});
+					}
+					return res.status(200).send(rows);
+				}	catch(error) {
+					return res.status(400).send(error);
+				}
 			}
-			return res.status(200).send(rows);
-		}	catch(error) {
-			return res.status(400).send(error);
+		}	else {
+			const findAllQuery = 'SELECT * FROM mail WHERE user_id = $1';
+			try {
+				const { rows } = await db.query(findAllQuery, [req.user.id]);
+				if (!rows[0]) {
+					return res.status(404).send({'message':'mail not found'});
+				}
+				return res.status(200).send(rows);
+			}	catch(error) {
+				return res.status(400).send(error);
+			}
 		}
 	},
 	async getOne(req, res) {
-		const findOneQuery = 'SELECT * FROM mail WHERE mail_id = $1 AND user_id = $2';
+		const findOneQuery = 'SELECT * FROM mail WHERE mail_id = $1';
 		try {
-			const { rows } = await db.query(findOneQuery, [req.params.mail_id, req.user.id]);
+			const { rows } = await db.query(findOneQuery, [req.params.mail_id]);
 			if (!rows[0]) {
 				return res.status(404).send({'message':'mail not found'});
 			}
@@ -52,12 +78,12 @@ const Mail = {
 		}
 	},
 	async update(req, res) {
-		const findOneQuery = 'SELECT * FROM mail WHERE mail_id = $1 AND user_id = $2';
+		const findOneQuery = 'SELECT * FROM mail WHERE mail_id = $1';
 		const updateOneQuery = `UPDATE mail 
 			SET image_url = $1, open = $2, scan = $3, forward = $4, shred = $5, modified_date = $6 
-			WHERE mail_id = $7 AND user_id = $8 returning *`;
+			WHERE mail_id = $7 returning *`;
 		try {
-			const { rows } = await db.query(findOneQuery, [req.params.mail_id, req.user.id]);
+			const { rows } = await db.query(findOneQuery, [req.params.mail_id]);
 			if (!rows[0]) {
 				return res.status(404).send({'message':'mail not found'});
 			}
@@ -68,8 +94,7 @@ const Mail = {
 				req.body.forward || rows[0].forward,
 				req.body.shred || rows[0].shred,
 				moment(new Date()),
-				req.params.mail_id,
-				req.user.id
+				req.params.mail_id
 			];
 			const response = await db.query(updateOneQuery, values);
 			return res.status(200).send(response.rows[0]);
@@ -78,9 +103,9 @@ const Mail = {
 		}
 	},
 	async delete(req, res) {
-		const deleteQuery = `DELETE FROM mail WHERE mail_id = $1 AND user_id = $2 returning *`;
+		const deleteQuery = `DELETE FROM mail WHERE mail_id = $1 returning *`;
 		try {
-			const { rows } = await db.query(deleteQuery, [req.params.mail_id, req.user.id]);
+			const { rows } = await db.query(deleteQuery, [req.params.mail_id]);
 			if (!rows[0]) {
 				return res.status(404).send({'message':'mail not found'});
 			}
