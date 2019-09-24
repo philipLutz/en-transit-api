@@ -25,6 +25,11 @@ app.use(limiter);
 
 app.use(express.json());
 
+// Dummy Endpoint
+app.get('/api', (req, res) => {
+	return res.status(200).send({'message': 'En Transit API'});
+});
+
 // User Routes
 app.post('/api/users', User.create);
 app.post('/api/users/login', User.login);
@@ -48,8 +53,11 @@ app.delete('/api/mail/:mail_id', Auth.verifyToken, Mail.delete);
 
 // Requests
 app.post('/api/requests/:mail_id', Auth.verifyToken, Request.create);
-
-
+app.get('/api/requests', Auth.verifyToken, Request.getAll);
+app.get('/api/requests/completeness/:complete', Auth.verifyToken, Request.getAllCompleteOrNot);
+app.get('/api/requests/:request_id', Auth.verifyToken, Request.getOne);
+app.put('/api/requests/:request_id', Auth.verifyToken, Request.update);
+app.delete('/api/requests/:request_id', Auth.verifyToken, Request.delete);
 
 app.listen(8080)
 console.log('app running on port ', 8080);
