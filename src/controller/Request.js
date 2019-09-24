@@ -58,7 +58,8 @@ const Request = {
 		if (req.user.admin) {
 
 		}	else {
-			const findAllQuery = 'SELECT * FROM requests WHERE user_id = $1'
+			const findAllQuery = 'SELECT * FROM requests WHERE user_id = $1';
+			
 		}
 	},
 	async update(req, res) {

@@ -28,6 +28,8 @@ app.use(express.json());
 // User Routes
 app.post('/api/users', User.create);
 app.post('/api/users/login', User.login);
+app.get('/api/users', Auth.verifyToken, User.getAllUsers);
+app.get('/api/users/:user_id', Auth.verifyToken, User.getOneUser);
 app.put('/api/users/:user_id', Auth.verifyToken, User.update);
 app.delete('/api/users/delete', Auth.verifyToken, User.delete);
 

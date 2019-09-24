@@ -68,6 +68,38 @@ const User = {
       return res.status(400).send(error)
     }
   },
+  async getAllUsers(req, res) {
+    if (req.user.admin) {
+      const findAllUsersQuery = 'SELECT * FROM users';
+      try {
+        const { rows } = await db.query(findAllUsersQuery);
+        if (!rows[0]) {
+          return res.status(404).send({'message': 'Users not found'});
+        }
+        return res.status(200).send(rows);
+      } catch(error) {
+        return res.status(400).send(error);
+      }
+    } else {
+      return res.status(400).send({'message': 'Request denied'});
+    }
+  },
+  async getOneUser(req, res) {
+    if (req.user.admin) {
+      const findOneUserQuery = 'SELECT * FROM users WHERE user_id = $1';
+      try {
+        const { rows } = await db.query(findOneUserQuery, [req.params.user_id]);
+        if (!rows[0]) {
+          return res.status(404).send({'message': 'User not found'});
+        }
+        return res.status(200).send(rows[0]);
+      } catch(error) {
+        return res.status(400).send(error);
+      }
+    } else {
+      return res.status(400).send({'message': 'Request denied'});
+    }
+  },
   async update(req, res) {
     const findOneQuery = 'SELECT * FROM users WHERE user_id = $1';
     const updateOneQuery = `UPDATE users
@@ -77,7 +109,7 @@ const User = {
     try {
       const { rows } = await db.query(findOneQuery, [req.user.id]);
       if (!rows[0]) {
-        return res.status(404).send({'message':'user not found'});
+        return res.status(404).send({'message':'User not found'});
       }
       const values = [
         req.body.first_name || rows[0].first_name,
