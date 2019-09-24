@@ -59,5 +59,5 @@ app.get('/api/requests/:request_id', Auth.verifyToken, Request.getOne);
 app.put('/api/requests/:request_id', Auth.verifyToken, Request.update);
 app.delete('/api/requests/:request_id', Auth.verifyToken, Request.delete);
 
-app.listen(8080)
-console.log('app running on port ', 8080);
+app.listen(process.env.PORT)
+console.log('app running on port ', process.env.PORT);
