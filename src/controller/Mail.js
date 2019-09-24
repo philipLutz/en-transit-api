@@ -28,29 +28,16 @@ const Mail = {
 		}
 	},
 	async getAll(req, res) {
+		// Admin request returns all mail and this will probably have to change
 		if (req.user.admin) {
-			if (req.params.user_id) {
-				const findAllQueryUser = 'SELECT * FROM mail WHERE user_id = $1';
-				try {
-					const { rows } = await db.query(findAllQueryUser, [req.params.user_id]);
-					if (!rows[0]) {
-						return res.status(404).send({'message':'mail not found'});
-					}
-					return res.status(200).send(rows);
-				}	catch(error) {
-					return res.status(400).send(error);
-				}
-			}	else {
-				const findAllQuery = 'SELECT * FROM mail';
-				try {
-					const { rows } = await db.query(findAllQuery);
-					if (!rows[0]) {
-						return res.status(404).send({'message':'mail not found'});
-					}
-					return res.status(200).send(rows);
-				}	catch(error) {
-					return res.status(400).send(error);
-				}
+			const findAllQuery = 'SELECT * FROM mail';
+			try {
+				const { rows } = await db.query(findAllQuery);
+				if (!rows[0]) {
+					return res.status(404).send({'message':'what?'});					}
+				return res.status(200).send(rows);
+			}	catch(error) {
+				return res.status(400).send(error);
 			}
 		}	else {
 			const findAllQuery = 'SELECT * FROM mail WHERE user_id = $1';
