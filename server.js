@@ -62,4 +62,4 @@ app.delete('/api/requests/:request_id', Auth.verifyToken, Request.delete);
 app.listen(process.env.PORT)
 console.log('app running on port ', process.env.PORT);
 
-export default app;
+module.exports = app;
