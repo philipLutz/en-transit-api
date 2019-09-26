@@ -2,10 +2,13 @@
   "name": "en-transit-api",
   "version": "1.0.0",
   "description": "Prototype backend for digital mail handling service",
-  "main": "start.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node start.js"
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run build-babel",
+    "start": "npm run build && node ./build/server.js"
   },
   "author": "Philip Lutz",
   "license": "ISC",
@@ -20,7 +23,15 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "pg": "^7.12.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-watch": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
