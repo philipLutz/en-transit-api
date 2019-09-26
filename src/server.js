@@ -8,7 +8,7 @@ import User from './controller/User.js';
 import Consent from './controller/Consent.js';
 import Mail from './controller/Mail.js';
 import Request from './controller/Request.js';
-import Auth from './middleware/Auth.js';
+import Auth from './middleware/Authentication.js';
 
 dotenv.config();
 const app = express();
