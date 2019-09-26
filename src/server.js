@@ -4,10 +4,11 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import 'babel-polyfill';
 import User from './controller/User.js';
-import Auth from './middleware/Auth.js';
+// import Auth from './middleware/Auth.js';
 import Consent from './controller/Consent.js';
 import Mail from './controller/Mail.js';
 import Request from './controller/Request.js';
+import Auth from './middleware/Auth.js';
 
 dotenv.config();
 const app = express();
